@@ -38,6 +38,8 @@ f = Form(properties=properties)
 f.displayForm()
 ```
 
+![pic1](./docs/pic1.png)
+
 This will allow a user to set all of the values and then save them to a file.
 
 If you wish to handle the values in the program itself you can also define a callback function for the output. This will add a submit button and pass a dictionary of all the values as an argument.
@@ -49,6 +51,8 @@ def submit(values):
 f = Form(properties=properties, submit=submit)
 f.displayForm()
 ```
+
+![pic2](./docs/pic2.png)
 
 You can also create a callback function that gets activated whenever one of the inputs is modified. This one will be passed the name of the modified property and its new value (as a string).
 
@@ -65,6 +69,8 @@ def callback(name,value):
 f = Form(properties=properties, callback=callback, submit=submit)
 f.displayForm()
 ```
+
+![pic3](./docs/pic3.png)
 
 `printError(string)` and `clrError()` will modify the error message field on the bottom of the form.
 
@@ -114,3 +120,5 @@ def callback(name,value):
 f = Form(properties=properties, callback=callback, title="Form", submit=submit, icon="logo.ico")
 f.displayForm()
 ```
+
+![pic4](./docs/pic4.png)
