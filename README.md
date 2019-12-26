@@ -3,7 +3,7 @@ maskifla
 
 Maskifla is a python library to facilitate getting user input for a list of parameters through a simple tk gui. The name maskifla comes from the talmudic phrase מתקיף לה, meaning to ask a question.
 
-Useage
+Usage
 -
 
 As of now maskifla is just one python file with a single class, and can be imported like this:
