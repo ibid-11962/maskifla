@@ -17,11 +17,11 @@ As of now maskifla is just one python file with a single class, and can be impor
 from maskifla import Form
 ```
 
-## Constructer
+## Constructor
 
 To use maskifla, you must first initilize a new Form object and than display it.
 
-The constructer has the following form:
+The constructor has the following form:
 
 ```
 Form(properties,defaults={},callback=None,submit=None,title="Maskifla",icon=None,forceValidate=True)
