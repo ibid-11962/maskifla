@@ -14,21 +14,21 @@ properties = [
 	"description": "Size of word, must be even",		},
 {	"name":"num_rw_ports",
 	"type":"dropdown",
-	"options":["1","2","4","8"],
+	"options":["0","1","2","4","8"],
 	"default":"1",
 	"category":"Configuration options",
 	"subcategory":"Port configuration",	
 	"description": "Number of ReadWrite ports",			},
 {	"name":"num_r_ports",
 	"type":"dropdown",
-	"options":["1","2","4","8"],
+	"options":["0","1","2","4","8"],
 	"default":"0",
 	"category":"Configuration options",
 	"subcategory":"Port configuration",	
 	"description": "Number of Read ports",				},
 {	"name":"num_w_ports",
 	"type":"dropdown",
-	"options":["1","2","4","8"],
+	"options":["0","1","2","4","8"],
 	"default":"0",
 	"category":"Configuration options",
 	"subcategory":"Port configuration",	
@@ -63,6 +63,8 @@ properties = [
 ]
 
 def callback(name,value,trigger):
+	if trigger=="trace":
+		return
 	try:
 		if int(f.getvalue("word_size"))%2:
 			f.printError("ERROR: word_size must be even. Please fix.")
@@ -75,7 +77,7 @@ def callback(name,value,trigger):
 def submit(values):
 	print(values)
 
-f = Form(properties=properties, callback=callback, title="Form", submit=submit, icon="logo.ico")
+f = Form(properties=properties, defaults={"word_size":32,"num_words":64},callback=callback, submit=submit, title="Compiler configuration", icon="logo.ico")
 
 f.displayForm()
 
