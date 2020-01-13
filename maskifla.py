@@ -4,7 +4,7 @@ from tkinter import filedialog
 import ast
 
 class Form:
-	def __init__(self,properties=[],callback=None,submit=None,title="",icon=None,forceValidate=True):
+	def __init__(self,properties=[],defaults={},callback=None,submit=None,title="Maskifla",icon=None,forceValidate=True):
 		self.properties = properties
 		self.values = {}
 		self.callback=callback
@@ -17,9 +17,11 @@ class Form:
 		self.hasCategories=False
 		self.hasSubcategories=False
 		for property in properties:
-			if "category" in property:
+			if property["name"] in defaults.keys(): #override defaults 
+				property["default"]=defaults[property["name"]]
+			if "category" in property: #check for tabs
 				self.hasCategories=True
-			if "subcategory" in property:
+			if "subcategory" in property: #check for groups
 				self.hasSubcategories=True
 
 	def __loadFile(self):
@@ -42,10 +44,9 @@ class Form:
 
 	def printError(self,errstring):
 		self.root.children["error"]["text"]=errstring
-		if self.forceValidate:
-			if self.submit:
+		if self.forceValidate and self.submit:
 				self.root.children["buttons"].children["submit"]["state"]=("disabled" if errstring else "normal")
-			self.root.children["buttons"].children["save"]["state"]=("disabled" if errstring else "normal")
+				self.root.children["buttons"].children["save"]["state"]=("disabled" if errstring else "normal")
 
 	def clrError(self):
 		self.printError("")
@@ -62,15 +63,17 @@ class Form:
 	def getvalues(self):
 		return dict((x, y.get()) for x, y in self.values.items())
 
-	def setvalues(self,dict):
-		for key,value in dict.items():
-			self.values[key].set(value)
-
 	def getvalue(self,parameter):
 		return self.values[parameter].get()
 
+	def setvalues(self,dict):
+		[self.setvalue(key,value) for key,value in dict.items()]
+
 	def setvalue(self,parameter,value):
-		self.values[parameter].set(value)
+		if parameter in self.values:
+			self.values[parameter].set(value)
+		else:	#if parameter doesn't exist in form, add it to the dict so it'll still be outputed later
+			self.values[parameter]=tk.StringVar(value=value)
 		
 	def displayForm(self):
 		#parent window
@@ -137,12 +140,14 @@ class Form:
 			sv=self.values[name]=tk.StringVar(name=name)
 			if default:
 				sv.set(default)
-			sv.trace_add("write",lambda name,i,m : self.callback(name,self.getvalue(name),"trace"))
+			self.callback(name,self.getvalue(name),"default")
+			if type != "outputbox":
+				traceid=sv.trace_add("write",lambda name,i,m : self.callback(name,self.getvalue(name),"trace"))
 			#input field
 			if type == "textbox":
 				e=ttk.Entry(label, name=name ,textvariable=sv)
 				e.grid(row=row, column=1, padx=5, pady=3, sticky="we")
-				e.bind("<FocusOut>",lambda event : self.callback(event.widget.winfo_name(),self.getvalue(event.widget.winfo_name()),"focusout"))
+				#e.bind("<FocusOut>",lambda event : self.callback(event.widget.winfo_name(),self.getvalue(event.widget.winfo_name()),"focusout"))
 			elif type == "outputbox":
 				e=ttk.Entry(label, name=name ,textvariable=sv)
 				e.configure(state='readonly')
@@ -164,6 +169,9 @@ class Form:
 					if property.get("description"):
 						e.bind("<Enter>",lambda event : self.__printDescription(event.widget.winfo_name()))
 						e.bind("<Leave>",self.__clrDescription)
+						e.bind("<FocusOut>",lambda event : self.callback(event.widget.winfo_name(),self.getvalue(event.widget.winfo_name()),"focusout"))
+			if type != "outputbox":
+				e.bind("<FocusOut>",lambda event : self.callback(event.widget.winfo_name(),self.getvalue(event.widget.winfo_name()),"focusout"))
 			#input mouseover
 			if property.get("description"):
 				e.bind("<Enter>",lambda event : self.__printDescription(event.widget.winfo_name()))
