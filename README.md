@@ -9,12 +9,15 @@ The user can then enter input, save or load the values from a file, or if a call
 
 # Usage
 
+## Import
 
 As of now maskifla is just one python file with a single class, and can be imported like this:
 
 ```
 from maskifla import Form
 ```
+
+## Constructer
 
 To use maskifla, you must first initilize a new Form object and than display it.
 
@@ -23,8 +26,6 @@ The constructer has the following form:
 ```
 Form(properties,defaults={},callback=None,submit=None,title="Maskifla",icon=None,forceValidate=True)
 ```
-
-Where:
 
 - `properties` is a list of property dictionaries, one for each input, with the following keys (most of which are optional):
     - `name` is the name of the property. This gets displayed on the form and is used as a key to reference it. 
@@ -41,10 +42,10 @@ Where:
     - `description` is the string to be displayed on the bottom of the form when the input is mouseovered.
 - `defaults` is a dictionary of name/value pairs to override the default values given in `properties.`
 - `callback` is function that runs everytime input is modified or focus is shifted from an input.
-- `submit` is a function that runs when the form is submitted. If no function is specified then no submit button will be shown.
+- `submit` is a function that runs when the form is submitted. If no function is specified then no SUBMIT button will be shown.
 - `title` is what goes in the form's titlebar
 - `icon` is a string of a path to an ico file to be used in the titlebar
-- `forceValidate` is a flag that will cause the submit and save buttons to be disabled whenever an error messege is displayed.
+- `forceValidate` is a flag that will cause the SUBMIT and SAVE buttons to be disabled whenever an error messege is displayed.
 
 The `callback` function has the following form:
 
@@ -52,7 +53,6 @@ The `callback` function has the following form:
 callback(name,value,trigger)
 ```
 
-Where:
 - `name` is the name of the property most recently edited.
 - `value` is its (new) current value, as a string.
 - `trigger` is the reason the callback was called you can add a quick "if trigger==X:return" to ignore some of these.
@@ -66,7 +66,9 @@ The `submit` fuction looks like this:
 submit(values)
 ```
 
-Where `values` is a dicitonary of all the name,value pairs. This is the same format that gets exported to a file with the `SAVE` button.
+-  `values` is a dicitonary of all the name,value pairs. This is the same format that gets exported to a file with the `SAVE` button.
+
+## Methods
 
 The following methods are available on a maskifla Form object. Note that all returned values are strings:
 
@@ -79,9 +81,9 @@ The following methods are available on a maskifla Form object. Note that all ret
 - `setvalue(parameter,value)` sets a single value.
     - `parameter` is the name of the value to set.
     - `value` is the new value.
-- `printError(errstring)` prints an error message to the bottom of the form in red. If `forceValidate` is True (default), then the `submit` and `save` buttons will be greyed out.
+- `printError(errstring)` prints an error message to the bottom of the form in red. If `forceValidate` is True (default), then the `SUBMIT` and `SAVE` buttons will be greyed out.
     - `errstring` is the error message to display.
-- `clrError()` clears the current error message and renables the `submit` and `save` buttons.
+- `clrError()` clears the current error message and renables the `SUBMIT` and `SAVE` buttons.
 
 # Example:
 
