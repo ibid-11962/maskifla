@@ -124,7 +124,7 @@ This results in the following form:
 
 ![pic1](./docs/pic1.png)
 
-The gap under the inputs is where the description mouseover and error message gets displayed. 
+The gap under the inputs is where the description mouseover and error message get displayed. 
 
 A longer example utilizing all input types can be found [here](/example/test.py) and results in the following form:
 
